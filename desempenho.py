@@ -29,7 +29,7 @@ def scores(clf_name, prediction, metodo, target_test, file, split_number, iterac
         line += f"{matthews_corrcoef(target_test, prediction)},"
         line += f"{f1_score(target_test, prediction,average='macro')},"
         line += f"{recall_score(target_test, prediction, average='macro')},"
-        line += f"{precision_score(target_test, prediction, average='macro')}"
+        line += f"{precision_score(target_test, prediction, average='macro')},"
         line += f"{tp},"
         line += f"{tn},"
         line += f"{fp},"
