@@ -12,6 +12,7 @@ from sklearn.metrics import precision_score
 from sklearn.metrics import matthews_corrcoef
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix
 from os import listdir
 
 import warnings
@@ -21,18 +22,23 @@ def warn(*args, **kwargs):
 warnings.warn = warn
 
 def scores(clf_name, prediction, metodo, target_test, file, split_number, iteracao, output):
+    tn,fp,fn,tp = confusion_matrix(target_test,prediction).ravel()
     with open(output, 'at') as out_file:
         line = f"\"{file} , {clf_name} , {metodo} , Split # {split_number} , Treino # {iteracao}\","
         line += f"{accuracy_score(target_test, prediction)},"
         line += f"{matthews_corrcoef(target_test, prediction)},"
         line += f"{f1_score(target_test, prediction,average='macro')},"
         line += f"{recall_score(target_test, prediction, average='macro')},"
-        line += f"{precision_score(target_test, prediction, average='macro')}\n"
+        line += f"{precision_score(target_test, prediction, average='macro')}"
+        line += f"{tp},"
+        line += f"{tn},"
+        line += f"{fp},"
+        line += f"{fn}\n"
         out_file.writelines(line)
 dir = 'features/'
 output = 'output.csv'
 with open(output, 'wt') as out_file: 
-        out_file.writelines('\"Descrição\",\"Acurácia\",\"F1-Score\",\"Recall\",\"Precisão\",\"MCC\"\n')
+        out_file.writelines('\"Descrição\",\"clf\",\"metodo\",\"split\",\"treino\",\"Acurácia\",\"F1-Score\",\"Recall\",\"Precisão\",\"MCC\",\"Verdadeiro Positivo\",\"Verdadeiro Negativo\",\"Falso Positivo\",\"Falso Negativo\"\n')
     
 
 names=[] # nome das colunas
